@@ -1,19 +1,29 @@
+<!DOCTYPE html>
 <html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width" />
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- <meta name="viewport" content="width=device-width" /> -->
 	<title>Campaign Map</title>
 	
+	<link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
+	<link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
+
 	<!-- Stylesheets -->
 	<link rel="stylesheet" type="text/css" href="css/index.css" />
 	<link rel="stylesheet" type="text/css" href="css/counter.css" />
+		
+	<!--
 	<link rel="stylesheet" href="http://js.arcgis.com/3.9/js/dojo/dijit/themes/claro/claro.css">  
 	<link rel="stylesheet"type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+	-->
+
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 		
 	<!-- ArcGIS JavaScript API -->
-	<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/"></script>
-	
+	<!-- <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/"></script> -->
+	<script src="http://js.arcgis.com/3.13/"></script>
+
 	<!-- jQuery -->
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -107,13 +117,21 @@
 	</script>
 	
 	<style>
-	
+		html,
+		body,
+		#map {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		
 		/*.esriSimpleSliderTL 
 		{
 			top: 10px;
 			left: 10px;
 			border: none;
-		}*/
+		}*/	
 		
 		.esriControlsBR 
 		{
@@ -131,11 +149,9 @@
 		.slider .ui-state-default:hover {
 		    cursor:pointer;
 		}
-		
 		/*.slider, .sliderLabelContainer {
 		    margin-left:10px;
 		}
-		
 		.ui-slider-horizontal .ui-slider-handle {
 		    top: -6px;
 		}*/
@@ -173,13 +189,12 @@
 
 		<!-- Basemap Gallery -->
 		<div style="position:absolute; right:20px; top:10px; z-Index:999;">
-          <div data-dojo-type="dijit.TitlePane" 
-               data-dojo-props="title:'Switch Basemap', closable:false,  open:false">
-            <div data-dojo-type="dijit.layout.ContentPane" style="width:380px; height:280px; overflow:auto;">
-            	<div id="basemapGallery" ></div>
-            </div>
-          </div>
-        </div>
+			<div data-dojo-type="dijit.TitlePane" data-dojo-props="title:'Switch Basemap', closable:false, open:false">
+				<div data-dojo-type="dijit.layout.ContentPane" style="width:380px; height:280px; overflow:auto;">
+					<div id="basemapGallery" ></div>
+            			</div>
+          		</div>
+        	</div>
 		
 		<!-- Panel Container -->
 		<div id="panelContainer" class="rounded shadow">
@@ -191,9 +206,14 @@
 				<div id="panelCampaign" class="page">
 					<div class="panelHeader">
 						CAMPAIGN&nbsp;&nbsp;&nbsp;<input id="txtName" class="inputText" type="text" value="Organic Milk" disabled />
-						<a href="javascript:launchCampaign()"><img src="images/go.png" title="Launch Campaign" /></a>
-						<!--<a href="javascript:deleteFences()"><img src="images/del.png" title="Delete Campaign" /></a>-->
-						<img id="loader" src="images/loader.gif" style="display:none" />
+						
+				<!--	
+				<a href="javascript:launchCampaign()"><img src="images/go.png" title="Launch Campaign" /></a>
+				-->	
+
+
+					<!--<a href="javascript:deleteFences()"><img src="images/del.png" title="Delete Campaign" /></a>-->
+					<!-- <img id="loader" src="images/loader.gif" style="display:none" /> -->
 					</div>
 					<div class="panelBody">
 						<div class="col col1 line">

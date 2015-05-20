@@ -47,7 +47,6 @@ var timer;
 // Load config XML file
 dojo.addOnLoad(init);
 
-
 // -- MAP FUNCTIONS -- //
 
 // INIT
