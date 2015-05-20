@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="ja">
+<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width" />
@@ -84,7 +83,7 @@
 		    	updateStoresDefQuery();
 		    });
 
-		    $(".selectText" ).change(function () { 
+		    $("#selectOsake").change(function () { 
 		    	// console.log($(this).val()) 
 		    	updateStoresDefQuery();
 		    });
@@ -202,22 +201,11 @@
 							<div id="panelStores" class="counter"></div>
 						</div>
 						<div class="col col2 line">
-							<span class="title">LIFEMODE GROUP</span>
-							<!-- <input id="txtLifeMode" class="inputText" type="select" value="Select Group" /> -->
-							<select class="selectText">
-								<option value="all">All</option>
-								<option value="Traditional Living">Traditional Living</option>
-								<option value="Senior Styles">Senior Styles</option>
-								<option value="Global Roots">Global Roots</option>
-								<option value="Solo Acts">Solo Acts</option>
-								<option value="American Quilt">American Quilt</option>
-								<option value="Scholars and Patriots">Scholars and Patriots</option>
-								<option value="High Society">High Society</option>
-								<option value="Family Portrait">Family Portrait</option>
-								<option value="Upscale Avenues">Upscale Avenues</option>
-								<option value="Factories &amp; Farms">Factories & Farms</option>
-								<option value="Metropolis">Metropolis</option>
-								<option value="High Hopes">High Hopes</option>
+							<span id="lifeModeT" class="title">LIFEMODE GROUP</span>
+							
+							<select id="lifeModeS" class="selectText">
+								<option value="osake">お酒</option>
+								<option value="okozukai">月のお小遣い</option>
 							</select>
 							<span class="title">URBANICITY</span>
 							<div class="urbanicityContainer">
@@ -227,6 +215,29 @@
 							</div>
 						</div>
 						<div class="col col3 line">
+						
+							<span id="lifeModeOsake" class="title">お酒</span>
+							<select id="selectOsake" class="selectText">
+	
+								<option value="beer">ビール</option>
+								<option value="premiumBeer">プレミアムビール</option>
+								<option value="happoshu">発泡酒</option>
+								<option value="thirdBeer">第三のビール</option>
+								<option value="chuhaiSour">チューハイ・サワー</option>
+								<option value="shochu1">焼酎（甲類）</option>
+								<option value="shochu2">焼酎（乙類）</option>
+								<option value="japaneseSake">日本酒</option>
+								<option value="wine">ワイン</option>
+								<option value="fruitWine">果実酒</option>	
+								<option value="liqueur">リキュール</option>
+								<option value="whiskey">ウィスキー</option>
+								<option value="brandy">ブランデー</option>
+								<option value="other">その他</option>
+							
+							</select>
+
+						</div>
+						<div class="col col4">					
 							<span class="title">NATURAL / ORGANIC INDEX</span>
 							<div id="natOrgLabel" class="natOrgCounter">100</div> 					
 							<div class="sliderPanelN">
@@ -234,27 +245,6 @@
 								<div id="labelsDistanceN" class="sliderLabelContainer">
 									<span class="sliderLabelN">0</span>
 									<span class="sliderLabelN" style="left: 145px">180</span>
-								</div>
-							</div>
-							<!-- <span class="title">FILTER STORES<br/>AVG. HOUSEHOLD INCOME</span><br/> -->
-							<!--<input id="chkFilter" type="checkbox" onchange="toggleFilter()"/> Avg. Household Income-->
-							<!-- <div class="sliderPanel">
-								<div id="sliderFilter"></div>
-								<div id="labelsFilter"  class="sliderLabelContainer">
-									<span  class="sliderLabel">$0</span>
-									<span  class="sliderLabel" style="left: 180px">$200K</span>
-								</div>
-							</div> -->
-						</div>
-						<div class="col col4">
-							<span class="title">MOBILE MESSAGE</span>
-							<input id="txtMessage" class="inputText" type="text" value="$1.50 off Organic Milk" style="font-size:16px;" />
-							Distance (meters):
-							<div class="sliderPanel">
-								<div id="sliderDistance"></div>
-								<div id="labelsDistance" class="sliderLabelContainer">
-									<span  class="sliderLabel">100</span>
-									<span class="sliderLabel" style="left: 180px">300</span>
 								</div>
 							</div>
 						</div>

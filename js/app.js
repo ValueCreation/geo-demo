@@ -57,7 +57,7 @@ function init(){
 
 	dojo.parser.parse();
 	
-	esri.config.defaults.io.proxyUrl = config.proxyURL;
+	//esri.config.defaults.io.proxyUrl = config.proxyURL;
 	
  	geomService = new esri.tasks.GeometryService(config.geomURL);
  	
@@ -88,24 +88,26 @@ function init(){
 		dojo.connect(map, "onUpdateEnd", mapUpdateEnd);
 		
 		//init layers
-      	var layers = response.itemInfo.itemData.operationalLayers;  
-		if(map.loaded){
+		var layers = response.itemInfo.itemData.operationalLayers;  
+		
+		if (map.loaded) {
 			initMap(layers);
-		}else{
-			dojo.connect(map,"onLoad",function(){
-    			initMap(layers);
+		} else {
+			dojo.connect(map,"onLoad",function() {
+    				initMap(layers);
   			});
   		}
 
   		var basemapGallery = new esri.dijit.BasemapGallery({
-          showArcGISBasemaps: true,
-          map: map
-        }, "basemapGallery");
-        basemapGallery.startup();
+          		showArcGISBasemaps: true,
+			map: map
+		}, "basemapGallery");
+		
+		basemapGallery.startup();
         
-        basemapGallery.on("error", function(msg) {
-          console.log("basemap gallery error:  ", msg);
-        });
+		basemapGallery.on("error", function(msg) {
+			console.log("basemap gallery error:  ", msg);
+		});
 		
 	});
 	
@@ -139,14 +141,16 @@ function mapUpdateEnd() {
 // INIT MAP
 function initMap(layers){
 	var layerInfo = dojo.map(layers, function(layer,index){
+		
 		if (layer.title == config.lyrStores) {
 			lyrStores = layer.layerObject;
 			dojo.connect(lyrStores, "onUpdateEnd", storesUpdateEnd);
 		}
 	  		
-		if (layer.title == config.lyrEnrichment)
+		if (layer.title == config.lyrEnrichment) {
 	  		lyrEnrichment = layer.layerObject;
-	  		
+	  	}
+
 	});
 }
 
@@ -155,13 +159,10 @@ function storesUpdateEnd() {
 	var count = lyrStores.graphics.length;
 	counterStores.setValue(count);
 	createCircles();
-
 	// setTimeout(function () {
 		// updateStoresDefQuery();
 	// }, 2000);	
 }
-
-
 
 // -- COUNTER FUNCTIONS -- //
 
@@ -294,7 +295,7 @@ function toggleFilter() {
 //FILTER STORES BY URBANICITY, LIFEMODE & NAT/ORG
 function updateStoresDefQuery() {
 	var def = [];
-
+	/*
 	var uDef = getUrbanacityDefQuery();
 	if (uDef)
 		def.push(uDef);
@@ -302,7 +303,7 @@ function updateStoresDefQuery() {
 	var lmDef = getLifeModeDefQuery();
 	if (lmDef)
 		def.push(lmDef);
-
+	*/
 	var noDef = getNatOrgDefQuery();
 	if (noDef)
 		def.push(noDef);
@@ -334,10 +335,12 @@ function getLifeModeDefQuery() {
 
 function getNatOrgDefQuery() {
 	var val = parseInt($( "#sliderDistanceN" ).slider("value"));
+	var osake = $("#selectOsake").val();
+
 	if (val == 0) {
 		return null;
 	} else {
-		return "MP14028a_I >= " + val;
+		return "Pref_code = '13' AND City_code <> '381' AND " + osake + " >= " + val;
 	}
 }
 
