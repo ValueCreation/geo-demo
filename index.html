@@ -40,63 +40,54 @@
 	
 		$(function() {
 		    
-		    $( "#sliderDistanceN" ).slider(
-				{
-		    		// range: "max",
-		    		value: 100,
-		    		min: 0,
-      				max: 180,
-      				step: 10,
-					stop: function( event, ui ) {
-						natOrgIndex = ui.value;
-						if (natOrgIndex == 0) {
-							$('#natOrgLabel').text('- -');
-						} else {
-							$('#natOrgLabel').text(natOrgIndex);
-						}
-						// natOrgIndexTimer = setTimeout(updateStoresDefQuery, 500);
-						updateStoresDefQuery();
+		    $("#sliderDistanceN").slider({
+		    	value: 100,
+		    	min: 0,
+      			max: 200,
+      			step: 10,
+			stop: function(event, ui) {
+				natOrgIndex = ui.value;
+					if (natOrgIndex == 0) {
+						$('#natOrgLabel').text('- -');
+					} else {
+						$('#natOrgLabel').text(natOrgIndex);
 					}
-
+					updateStoresDefQuery();
+				}
 		    	}
 		    );
 
-		    $( "#sliderFilter" ).slider(
-		    	{
-		    		range: "min",
-		    		min: 0,
-      				max: 200,
-      				step: 25,
-					slide: function( event, ui ) {
-						income = ui.value;
-						filterTimer = setTimeout(filterStores, 500);
-					}
+		    $("#sliderFilter").slider({
+		    	range: "min",
+		    	min: 0,
+      			max: 200,
+      			step: 25,
+			slide: function(event, ui) {
+				income = ui.value;
+					filterTimer = setTimeout(filterStores, 500);
+				}
 		    	}
 		    );
 		    
-		    $( "#sliderDistance" ).slider(
-				{
-		    		range: "min",
-		    		value: 100,
-		    		min: 100,
-      				max: 300,
-      				step: 50,
-					slide: function( event, ui ) {
-						distance = ui.value;
-						distanceTimer = setTimeout(updateDistance, 500);
-					}
-
+		    $("#sliderDistance").slider({
+		    	range: "min",
+		    	value: 100,
+		    	min: 100,
+      			max: 300,
+      			step: 50,
+			slide: function(event, ui) {
+					distance = ui.value;
+					distanceTimer = setTimeout(updateDistance, 500);
+				}
 		    	}
 		    );
 
 		    $('.circle').click(function () {
 		    	$(this).toggleClass('circle-selected');
-		    	// updateStoresUrbanicity(this.id);
 		    	updateStoresDefQuery();
 		    });
 
 		    $("#selectOsake").change(function () { 
-		    	// console.log($(this).val()) 
 		    	updateStoresDefQuery();
 		    });
 
@@ -207,15 +198,7 @@
 				<!-- Panel Campaign -->
 				<div id="panelCampaign" class="page">
 					<div class="panelHeader">
-						CAMPAIGN&nbsp;&nbsp;&nbsp;<input id="txtName" class="inputText" type="text" value="Organic Milk" disabled />
-						
-				<!--	
-				<a href="javascript:launchCampaign()"><img src="images/go.png" title="Launch Campaign" /></a>
-				-->	
-
-
-					<!--<a href="javascript:deleteFences()"><img src="images/del.png" title="Delete Campaign" /></a>-->
-					<!-- <img id="loader" src="images/loader.gif" style="display:none" /> -->
+						CAMPAIGN&nbsp;&nbsp;&nbsp;
 					</div>
 					<div class="panelBody">
 						<div class="col col1 line">
@@ -266,7 +249,8 @@
 								<div id="sliderDistanceN"></div>
 								<div id="labelsDistanceN" class="sliderLabelContainer">
 									<span class="sliderLabelN">0</span>
-									<span class="sliderLabelN" style="left: 145px">180</span>
+									<span class="sliderLabelN" style="left: 75px">100</span>
+									<span class="sliderLabelN" style="left: 160px">200</span>
 								</div>
 							</div>
 						</div>
