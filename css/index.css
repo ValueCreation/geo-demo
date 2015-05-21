@@ -231,7 +231,7 @@ select
 {
 	position: absolute;
 	top: 85px;
-	left: 12px;
+	left: 40px;
 	width: 160px;
 	height: 60px;
 	display: block;
@@ -352,31 +352,31 @@ select
 .col1
 {
 	position: absolute;
-	left: 5px;
+	left: 15px;
 	top: 10px;
-	width: 115px;
+	width: 135px;
 }
 
 .col2
 {
 	position: absolute;
-	left: 135px;
-	width: 190px;
+	left: 170px;
+	width: 180px;
 	top: 10px;
 }
 
 .col3
 {
 	position: absolute;
-	left: 365px;
+	left: 370px;
 	top: 10px;
-	width: 175px;
+	width: 180px;
 }
 
 .col4
 {
 	position: absolute;
-	left: 555px;
+	left: 565px;
 	top: 10px;
 }
 .col1-o
