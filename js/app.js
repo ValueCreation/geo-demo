@@ -45,6 +45,7 @@ var natOrgIndexTimer;
 var timer;
 
 var chomonicxLayer;
+var geodemoLayer;
 
 // Load config XML file
 dojo.addOnLoad(init);
@@ -59,7 +60,6 @@ function init(){
 	dojo.parser.parse();
 	
 	//esri.config.defaults.io.proxyUrl = config.proxyURL;
-	
  	geomService = new esri.tasks.GeometryService(config.geomURL);
  	
 	var mapDeferred = esri.arcgis.utils.createMap(config.webmap, "map", {
@@ -90,6 +90,9 @@ function init(){
 			if (layers[i].title == "ChomonicxSwebM") {
 				chomonicxLayer = layers[i];
 				chomonicxLayer.layerObject.setVisibility(false);
+			} else if (layers[i].title == config.lyrStores) {
+				geodemoLayer = layers[i];
+				geodemoLayer.layerObject.setVisibility(true);
 			}
 		}
 
@@ -197,8 +200,14 @@ function updateStoresDefQuery() {
 		def.push(noDef);
 	
 	lyrFences.clear();
-	lyrFences.setVisibility(true);	
+	
+	if ($("#lyrFences:checked").val()) {
+		lyrFences.setVisibility(true);
+	} else {
+		lyrFences.setVisibility(false);
+	}
 	lyrStores.setDefinitionExpression(def.join(" AND "));
+
 }
 
 function getUrbanacityDefQuery() {
@@ -365,6 +374,26 @@ function selectChomonicxLayer() {
 		chomonicxLayer.layerObject.setVisibility(false);
 	}
 
+
 }
 
+function selectGeoDemoLayer() {
+
+	if ($("#geodemoLayer:checked").val()) {
+		geodemoLayer.layerObject.setVisibility(true);	
+	} else {
+		geodemoLayer.layerObject.setVisibility(false);
+	}
+
+}
+
+function selectLyrFences() {
+	
+	if ($("#lyrFences:checked").val()) {
+		lyrFences.setVisibility(true);	
+	} else {
+		lyrFences.setVisibility(false);
+	}
+
+}
 
