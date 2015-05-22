@@ -44,6 +44,8 @@ var natOrgIndexTimer;
 
 var timer;
 
+var chomonicxLayer;
+
 // Load config XML file
 dojo.addOnLoad(init);
 
@@ -75,17 +77,22 @@ function init(){
 		map = response.map;
 		
 		lyrFences = new esri.layers.GraphicsLayer();
-		lyrFences.setVisibility(true);
+		lyrFences.setVisibility(false);
 		map.addLayer(lyrFences);
 		
-		dojo.connect(lyrFences, "onClick", fenceClickHandler);
-		
+		dojo.connect(lyrFences, "onClick", fenceClickHandler);	
 		dojo.connect(map, "onExtentChange", createCircles);
 		dojo.connect(map, "onUpdateEnd", mapUpdateEnd);
 		
 		//init layers
 		var layers = response.itemInfo.itemData.operationalLayers;  
-		
+		for (var i=0; i<layers.length; i++) {
+			if (layers[i].title == "ChomonicxSwebM") {
+				chomonicxLayer = layers[i];
+				chomonicxLayer.layerObject.setVisibility(false);
+			}
+		}
+
 		if (map.loaded) {
 			initMap(layers);
 		} else {
@@ -190,6 +197,7 @@ function updateStoresDefQuery() {
 		def.push(noDef);
 	
 	lyrFences.clear();
+	lyrFences.setVisibility(true);	
 	lyrStores.setDefinitionExpression(def.join(" AND "));
 }
 
@@ -207,7 +215,7 @@ function getUrbanacityDefQuery() {
 }
 
 function getLifeModeDefQuery() {
-	var val = $(".selectText" ).val();
+	var val = $(".selectText").val();
 	if (val == "all") {
 		return null;
 	} else {
@@ -216,13 +224,13 @@ function getLifeModeDefQuery() {
 }
 
 function getNatOrgDefQuery() {
-	var val = parseInt($( "#sliderDistanceN" ).slider("value"));
+	var val = parseInt($( "#sliderDistanceN").slider("value"));
 	var osake = $("#selectOsake").val();
 
 	if (val == 0) {
 		return null;
 	} else {
-		return "Pref_code = '13' AND City_code <> '381' AND " + osake + " >= " + val;
+		return "City_code <> '381' AND " + osake + " >= " + val;
 	}
 }
 
@@ -310,7 +318,7 @@ function renderFences() {
 		lyrFences.add(gra1);
 	}
 	
-	map.reorderLayer(lyrFences, 0);
+	map.reorderLayer(lyrFences, 1);
 
 }
 
@@ -347,6 +355,16 @@ function getColorRGB(color) {
 // QUERY ERROR HANDLER
 function queryErrorHandler(error) {
 	console.log(error.message);
+}
+
+function selectChomonicxLayer() {
+
+	if ($("#chomonicxLayer:checked").val()) {
+		chomonicxLayer.layerObject.setVisibility(true);	
+	} else {
+		chomonicxLayer.layerObject.setVisibility(false);
+	}
+
 }
 
 

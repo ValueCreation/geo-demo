@@ -262,19 +262,7 @@ select
 	text-align:center;
 }
 
-
-
-
 /* App */
-
-#map
-{
-	padding:0;
-	margin: 0;
-	width: 100%;
-	height: 100%;
-	background: transparent;
-}
 
 #panelContainer
 {
@@ -323,6 +311,12 @@ select
 	font-family: HelveticaNeueUltraLight;
 	font-weight: normal;
 	letter-spacing: 1px;
+}
+
+.layers
+{
+	position: absolute;
+	padding: 5px 200px 5px 200px;
 }
 
 .panelBody

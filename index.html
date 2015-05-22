@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 	<!-- <meta name="viewport" content="width=device-width" /> -->
-	<title>Campaign Map</title>
+	<title>ジオデモ</title>
 	
 	<link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
 	<link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
@@ -40,56 +40,35 @@
 	
 		$(function() {
 		    
-		    $("#sliderDistanceN").slider({
-		    	value: 100,
-		    	min: 0,
-      			max: 200,
-      			step: 10,
-			stop: function(event, ui) {
-				natOrgIndex = ui.value;
-					if (natOrgIndex == 0) {
-						$('#natOrgLabel').text('- -');
-					} else {
-						$('#natOrgLabel').text(natOrgIndex);
+			$("#sliderDistanceN").slider({
+				value: 100,
+				min: 0,
+				max: 200,
+      				step: 10,
+				stop: function(event, ui) {
+					natOrgIndex = ui.value;
+						if (natOrgIndex == 0) {
+							$('#natOrgLabel').text('- -');
+						} else {
+							$('#natOrgLabel').text(natOrgIndex);
+						}
+						updateStoresDefQuery();
 					}
-					updateStoresDefQuery();
 				}
-		    	}
-		    );
-
-		    $("#sliderFilter").slider({
-		    	range: "min",
-		    	min: 0,
-      			max: 200,
-      			step: 25,
-			slide: function(event, ui) {
-				income = ui.value;
-					filterTimer = setTimeout(filterStores, 500);
-				}
-		    	}
-		    );
+			);
 		    
-		    $("#sliderDistance").slider({
-		    	range: "min",
-		    	value: 100,
-		    	min: 100,
-      			max: 300,
-      			step: 50,
-			slide: function(event, ui) {
-					distance = ui.value;
-					distanceTimer = setTimeout(updateDistance, 500);
-				}
-		    	}
-		    );
+			$('.circle').click(function () {
+				$(this).toggleClass('circle-selected');
+				updateStoresDefQuery();
+			});
 
-		    $('.circle').click(function () {
-		    	$(this).toggleClass('circle-selected');
-		    	updateStoresDefQuery();
-		    });
+			$("#selectOsake").change(function () { 
+				updateStoresDefQuery();
+			});
 
-		    $("#selectOsake").change(function () { 
-		    	updateStoresDefQuery();
-		    });
+			$("#chomonicxLayer").click(function () {
+				selectChomonicxLayer();
+			});
 
 		});
 		
@@ -199,6 +178,9 @@
 				<div id="panelCampaign" class="page">
 					<div class="panelHeader">
 						CAMPAIGN&nbsp;&nbsp;&nbsp;
+					</div>
+					<div class="layers">
+						<input type="checkBox" id="chomonicxLayer" value="1"><label for="check1">ChomonicxSwebM</label>
 					</div>
 					<div class="panelBody">
 						<div class="col col1 line">
