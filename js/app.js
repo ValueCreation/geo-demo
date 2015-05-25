@@ -82,6 +82,7 @@ function init(){
 		
 		dojo.connect(lyrFences, "onClick", fenceClickHandler);	
 		dojo.connect(map, "onExtentChange", createCircles);
+		//dojo.connect(map, "onExtentChange", storesUpdateEnd);
 		dojo.connect(map, "onUpdateEnd", mapUpdateEnd);
 		
 		//init layers

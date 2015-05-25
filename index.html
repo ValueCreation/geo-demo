@@ -3,7 +3,6 @@
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-	<!-- <meta name="viewport" content="width=device-width" /> -->
 	<title>ジオデモ</title>
 	
 	<link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
@@ -12,9 +11,8 @@
 	<!-- Stylesheets -->
 	<link rel="stylesheet" type="text/css" href="css/index.css" />
 	<link rel="stylesheet" type="text/css" href="css/counter.css" />
-
+	
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-		
 	<!-- ArcGIS JavaScript API -->
 	<!--
 	<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/"></script>
@@ -194,7 +192,7 @@
 							<div id="panelStores" class="counter"></div>
 						</div>
 						<div class="col col2 line">
-							<span id="lifeModeT" class="title">LIFEMODE GROUP</span>
+							<span id="lifeModeT" class="title">GROUP</span>
 							
 							<select id="lifeModeS" class="selectText">
 								<option value="osake">お酒</option>
@@ -231,7 +229,7 @@
 
 						</div>
 						<div class="col col4">					
-							<span class="title">NATURAL / ORGANIC INDEX</span>
+							<span class="title">INDEX</span>
 							<div id="natOrgLabel" class="natOrgCounter">100</div> 					
 							<div class="sliderPanelN">
 								<div id="sliderDistanceN"></div>
@@ -241,49 +239,6 @@
 									<span class="sliderLabelN" style="left: 160px">200</span>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				
-				
-				<!-- Panel Metrics -->
-				<div id="panelMetrics" class="page">
-					<div class="panelHeader">
-						<span>CAMPAIGN METRICS</span>
-						<span id="titleSelected">: ALL STORES</span>
-					</div>
-					<div class="panelBody">
-						<div class="col col1-o line">
-							<span class="title">COUPONS TRIGGERED</span>
-							<div id="panelTriggers" class="counter"></div>
-						</div>
-						<div class="col col2-o line">
-							<span class="title">COUPONS CLAIMED</span>
-							<div id="panelSales" class="counter"></div>
-						</div>
-						<div id="panelSelected2" class="col col3-o">
-							<span id="titleStore" class="title">NO STORE SELECTED</span>
-							<div id="panelSelected" style="display: none">
-								<input id="txtMessageSelected" class="inputText" type="text" /><br/><br/>
-								<a href="javascript:updateFence()"><img src="images/save.png" title="Update Message"/></a>
-								<a href="javascript:clearSelectedFence()"><img src="images/close.png" title="Close Selected Store"/></a>
-							</div>
-						</div>
-					</div>
-					
-				</div>
-				
-				<!-- Panel Analytics -->
-				<div id="panelAnalytics" class="page">
-					<div class="panelHeader">
-						<span>CAMPAIGN ANALYTICS: MOST SUCCESSFUL STORE</span>
-					</div>
-					<div class="panelBody">
-						<div id="panelTapestry1" class="col col1-o line">
-						</div>
-						<div id="panelTapestry2" class="col col2-o line">
-						</div>
-						<div id="panelTapestry3" class="col col3-o">
 						</div>
 					</div>
 				</div>
