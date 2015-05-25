@@ -60,7 +60,7 @@ function init(){
 	dojo.parser.parse();
 	
 	//esri.config.defaults.io.proxyUrl = config.proxyURL;
- 	geomService = new esri.tasks.GeometryService(config.geomURL);
+ 	//geomService = new esri.tasks.GeometryService(config.geomURL);
  	
 	var mapDeferred = esri.arcgis.utils.createMap(config.webmap, "map", {
 		mapOptions: {
@@ -81,8 +81,8 @@ function init(){
 		map.addLayer(lyrFences);
 		
 		dojo.connect(lyrFences, "onClick", fenceClickHandler);	
-		dojo.connect(map, "onExtentChange", createCircles);
-		//dojo.connect(map, "onExtentChange", storesUpdateEnd);
+		//dojo.connect(map, "onExtentChange", createCircles);
+		dojo.connect(map, "onExtentChange", storesUpdateEnd);
 		dojo.connect(map, "onUpdateEnd", mapUpdateEnd);
 		
 		//init layers
@@ -157,13 +157,19 @@ function initMap(layers){
 }
 
 // STORES UPDATE END
-function storesUpdateEnd() {
-	var count = lyrStores.graphics.length;
-	counterStores.setValue(count);
+function storesUpdateEnd(extent) {
+	var count = lyrStores.graphics.length;	
+	var query = new esri.tasks.Query();
+	query.geometry = map.extent;
+	geodemoLayer.layerObject.queryFeatures(query, featureCount);
 	createCircles();
-	// setTimeout(function () {
-		// updateStoresDefQuery();
-	// }, 2000);	
+}
+
+function featureCount(response){
+	//var feature;
+	//var features = response.features;
+	var count = response.features.length;
+	counterStores.setValue(count);
 }
 
 // LOAD COUNTERS
@@ -245,9 +251,9 @@ function getNatOrgDefQuery() {
 }
 
 // CREATE CIRCLES
-function createCircles(){
+function createCircles(extent) {
 	//map.graphics.clear();
-	fences = [];	
+	fences = [];
 
 	var graphics = lyrStores.graphics;
 	storeCount = graphics.length;
