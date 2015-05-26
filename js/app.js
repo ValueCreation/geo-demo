@@ -42,10 +42,12 @@ var filterTimer;
 var distanceTimer;
 var natOrgIndexTimer;
 
-var timer;
 
 var chomonicxLayer;
 var geodemoLayer;
+var geodemoUpdateLayer;
+
+var noDef;
 
 // Load config XML file
 dojo.addOnLoad(init);
@@ -61,7 +63,6 @@ function init(){
 	
 	//esri.config.defaults.io.proxyUrl = config.proxyURL;
  	//geomService = new esri.tasks.GeometryService(config.geomURL);
- 	
 	var mapDeferred = esri.arcgis.utils.createMap(config.webmap, "map", {
 		mapOptions: {
 			wrapAround180:true,
@@ -124,6 +125,49 @@ function init(){
 
 }
 
+function makeGeodemoLayer(noDef) {
+	
+	if (!noDef) {
+		noDef = "City_code <> '381'";
+	//} else {
+		//noDef = geodemoLayer.layerDefinition.definitionExpression;
+	}
+	var geodemoUrl = geodemoLayer.url;
+	
+	if (geodemoUpdateLayer) {
+		map.removeLayer(geodemoUpdateLayer);
+	}
+
+	geodemoUpdateLayer = new esri.layers.FeatureLayer(geodemoUrl,{
+				id:"geodemoUpdateLayer",
+				mode: esri.layers.FeatureLayer.MODE_SNAPSHOT,	
+				infoTemplate: getMakePopupTemplate(),
+				outFields: ["storeName","kana","postCode","address","kata_sho","phone","company","category","jCode","prefCode","companyCode","masterCode","level_","beer","premiumBeer","happoshu","thirdBeer","chuhaiSour","shochu1","shochu2","japaneseSake","wine","fruitWine","liqueur","whiskey","brandy","other"],
+			});
+
+	var icon_url="http://static.arcgis.com/images/Symbols/AtoZ/redS.png";
+	var symbol = new esri.symbol.PictureMarkerSymbol({
+			"url":icon_url,
+			"height":20.7,
+			"width":15,
+			"type":"esriPMS",
+			"xoffset":0,
+			"yoffset":15
+			});
+	
+	geodemoUpdateLayer.setDefinitionExpression(noDef);
+	var renderer = new esri.renderer.SimpleRenderer(symbol);
+	geodemoUpdateLayer.setRenderer(renderer);
+	map.addLayer(geodemoUpdateLayer);
+	map.reorderLayer(geodemoUpdateLayer, 1);
+
+	if ($("#geodemoUpdateLayer:checked").val()) {
+		geodemoUpdateLayer.setVisibility(true);
+	} else {
+		geodemoUpdateLayer.setVisibility(false);
+	}
+}
+
 // FENCE CLICK HANDLER
 function fenceClickHandler(event) {
 	var gra = event.graphic;
@@ -158,7 +202,6 @@ function initMap(layers){
 
 // STORES UPDATE END
 function storesUpdateEnd(extent) {
-	var count = lyrStores.graphics.length;	
 	var query = new esri.tasks.Query();
 	query.geometry = map.extent;
 	geodemoLayer.layerObject.queryFeatures(query, featureCount);
@@ -166,8 +209,6 @@ function storesUpdateEnd(extent) {
 }
 
 function featureCount(response){
-	//var feature;
-	//var features = response.features;
 	var count = response.features.length;
 	counterStores.setValue(count);
 }
@@ -193,6 +234,11 @@ function loadCounters() {
 //FILTER STORES BY URBANICITY, LIFEMODE & NAT/ORG
 function updateStoresDefQuery() {
 	var def = [];
+	if (noDef) {
+		makeGeodemoLayer(noDef);
+	} else {
+		makeGeodemoLayer(noDef);
+	}
 	/*
 	var uDef = getUrbanacityDefQuery();
 	if (uDef)
@@ -202,12 +248,12 @@ function updateStoresDefQuery() {
 	if (lmDef)
 		def.push(lmDef);
 	*/
-	var noDef = getNatOrgDefQuery();
+	noDef = getNatOrgDefQuery();
 	if (noDef)
 		def.push(noDef);
 	
 	lyrFences.clear();
-	
+
 	if ($("#lyrFences:checked").val()) {
 		lyrFences.setVisibility(true);
 	} else {
@@ -394,6 +440,16 @@ function selectGeoDemoLayer() {
 
 }
 
+function selectGeoDemoUpdateLayer() {
+
+	if ($("#geodemoUpdateLayer:checked").val()) {
+		geodemoUpdateLayer.setVisibility(true);	
+	} else {
+		geodemoUpdateLayer.setVisibility(false);
+	}
+
+}
+
 function selectLyrFences() {
 	
 	if ($("#lyrFences:checked").val()) {
@@ -403,4 +459,127 @@ function selectLyrFences() {
 	}
 
 }
+
+function getMakePopupTemplate() {
+	
+	var popupTemplate = new esri.dijit.PopupTemplate({
+		  	title: "{storeName}",
+			fieldInfos: [
+				{
+					fieldName: "storeName",
+					visible: true,
+					label: "店舗名"
+				},{
+					fieldName: "kana",
+					visible: true,
+					label: "フリガナ"
+				},{
+					fieldName: "postCode",
+					visible: true,
+					label: "郵便番号"
+				},{
+					fieldName: "address",
+					visible: true,
+					label: "住所"
+				},{
+					fieldName: "kata_sho",
+					visible: true,
+					label: "方書"
+				},{
+					fieldName: "phone",
+					visible: true,
+					label: "電話番号"
+				},{
+					fieldName: "company",
+					visible: true,
+					label: "企業名"
+				},{
+					fieldName: "category",
+					visible: true,
+					label: "業態"
+				},{
+					fieldName: "jCode",
+					visible: true,
+					label: "行政コード"
+				},{
+					fieldName: "prefCode",
+					visible: true,
+					label: "都道府県コード"
+				},{
+					fieldName: "companyCode",
+					visible: true,
+					label: "企業コード"
+				},{
+					fieldName: "masterCode",
+					visible: true,
+					label: "マスターコード"
+				},{
+					fieldName: "level_",
+					visible: true,
+					label: "同定レベル"
+				},{
+					fieldName: "beer",
+					visible: true,
+					label: "ビール"
+				},{
+					fieldName: "premiumBeer",
+					visible: true,
+					label: "プレミアムビール"
+				},{
+					fieldName: "happoshu",
+					visible: true,
+					label: "発泡酒"
+				},{
+					fieldName: "thirdBeer",
+					visible: true,
+					label: "第3のビール"
+				},{
+					fieldName: "chuhaiSour",
+					visible: true,
+					label: "チューハイ・サワー"
+				},{
+					fieldName: "shochu1",
+					visible: true,
+					label: "焼酎（甲類）"
+				},{
+					fieldName: "shochu2",
+					visible: true,
+					label: "焼酎（乙類）"
+				},{
+					fieldName: "japaneseSake",
+					visible: true,
+					label: "日本酒"
+				},{
+					fieldName: "wine",
+					visible: true,
+					label: "ワイン"
+				},{
+					fieldName: "fruitWine",
+					visible: true,
+					label: "果実酒"
+				},{
+					fieldName: "liqueur",
+					visible: true,
+					label: "リキュール"
+				},{
+					fieldName: "whiskey",
+					visible: true,
+					label: "ウィスキー"
+				},{
+					fieldName: "brandy",
+					visible: true,
+					label: "ブランデー"
+				},{
+					fieldName: "other",
+					visible: true,
+					label: "その他"
+				}
+			],
+			showAttachments: true
+		});
+	
+	return popupTemplate;
+
+}
+
 
