@@ -222,6 +222,7 @@ function loadCounters() {
 	counterTriggers.value = 0;
 	counterSales = new Counter("panelSales", config);
 	counterSales.value = 0;
+	$("input:checkbox[id='geodemoUpdateLayer']").attr({'disabled':true});	
 }
 
 //FILTER STORES BY URBANICITY, LIFEMODE & NAT/ORG
@@ -259,7 +260,6 @@ function getUrbanacityDefQuery() {
 	$(".circle-selected").each(function (idx, item){
 		selected.push(item.id);
 	});
-
 	if (selected.length == 0) {
 		return null; 
 	} else {
@@ -346,6 +346,7 @@ function renderFences() {
 	var lSym = new esri.symbol.SimpleLineSymbol("solid", new dojo.Color([0,0,0,0]), 1);
 	
 	if (selectCount > 0) {
+		$("input:checkbox[id='geodemoUpdateLayer']").attr({'disabled':false});
 		if ($("#lyrFences:checked").val()) {
 			lyrFences.setVisibility(true);
 		}
