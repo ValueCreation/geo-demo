@@ -1,57 +1,28 @@
 ﻿// app.js - Main app functions
 
-var page = 0;
-
 var geomService;
-
 var webmap;
-
 var map;
-
 var mapLayersLoaded = false;
-
 var lyrStores;
-
-var lyrEnrichment;
-
 var lyrFences;
-
-var lyrAnalysis;
-
 var storeCount;
-
 var fences;
-
 var selectedFence;
-
-var income = 0;
-
 var distance = 100;
-var natOrgIndex = 0;
-
-var topStore;
-
 var counterStores;
-
 var counterTriggers;
-
 var counterSales;
 
-var filterTimer;
-
-var distanceTimer;
-var natOrgIndexTimer;
-
+var selectCount = 0;
 
 var chomonicxLayer;
 var geodemoLayer;
 var geodemoUpdateLayer;
-
 var noDef;
 
 // Load config XML file
 dojo.addOnLoad(init);
-
 // -- MAP FUNCTIONS -- //
 
 // INIT
@@ -82,7 +53,6 @@ function init(){
 		map.addLayer(lyrFences);
 		
 		dojo.connect(lyrFences, "onClick", fenceClickHandler);	
-		//dojo.connect(map, "onExtentChange", createCircles);
 		dojo.connect(map, "onExtentChange", storesUpdateEnd);
 		dojo.connect(map, "onUpdateEnd", mapUpdateEnd);
 		
@@ -145,10 +115,11 @@ function makeGeodemoLayer(noDef) {
 				outFields: ["storeName","kana","postCode","address","kata_sho","phone","company","category","jCode","prefCode","companyCode","masterCode","level_","beer","premiumBeer","happoshu","thirdBeer","chuhaiSour","shochu1","shochu2","japaneseSake","wine","fruitWine","liqueur","whiskey","brandy","other"],
 			});
 
-	var icon_url="http://static.arcgis.com/images/Symbols/AtoZ/redS.png";
+	var icon_url="http://static.arcgis.com/images/Symbols/AtoZ/blueS.png";
+	//var icon_url="http://static.arcgis.com/images/Symbols/AtoZ/redS.png";
 	var symbol = new esri.symbol.PictureMarkerSymbol({
 			"url":icon_url,
-			"height":20.7,
+			"height":20.71428571428571,
 			"width":15,
 			"type":"esriPMS",
 			"xoffset":0,
@@ -205,12 +176,31 @@ function storesUpdateEnd(extent) {
 	var query = new esri.tasks.Query();
 	query.geometry = map.extent;
 	geodemoLayer.layerObject.queryFeatures(query, featureCount);
+	
 	createCircles();
+
 }
 
 function featureCount(response){
 	var count = response.features.length;
 	counterStores.setValue(count);
+}
+
+function changeLayerColor() {
+
+	var icon_url="http://static.arcgis.com/images/Symbols/AtoZ/redS.png";
+	var symbol = new esri.symbol.PictureMarkerSymbol({
+				"url":icon_url,
+				"height":20.71428571428571,
+				"width":15,
+				"type":"esriPMS",
+				"xoffset":0,
+				"yoffset":15
+			});
+
+	var renderer = new esri.renderer.SimpleRenderer(symbol);
+	geodemoLayer.layerObject.setRenderer(renderer);
+	geodemoLayer.layerObject.redraw();
 }
 
 // LOAD COUNTERS
@@ -253,14 +243,9 @@ function updateStoresDefQuery() {
 		def.push(noDef);
 	
 	lyrFences.clear();
-
-	if ($("#lyrFences:checked").val()) {
-		lyrFences.setVisibility(true);
-	} else {
-		lyrFences.setVisibility(false);
-	}
 	lyrStores.setDefinitionExpression(def.join(" AND "));
-
+	selectCount++;
+	changeLayerColor();
 }
 
 function getUrbanacityDefQuery() {
@@ -325,21 +310,6 @@ function createCircles(extent) {
 			renderFences();
   		}
 	}
-	
-	/*
-	if (page == 0) {
-		var px = map.extent.getHeight() / map.height;
-		var size = parseInt(distance / px);
-		var lSym = new esri.symbol.SimpleLineSymbol("solid", new dojo.Color([0,0,0,0]), 1);
-		var sym = new esri.symbol.SimpleMarkerSymbol(esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, size, lSym, new dojo.Color([0,0,0,0.2]));
-		var graphics = lyrStores.graphics;
-		for (var i=0; i<graphics.length; i++) {
-			var gra = graphics[i];
-			var mapPt = gra.geometry;
-			map.graphics.add(new esri.Graphic(mapPt, sym));
-		}
-	}
-	*/
 }
 
 // CREATE FENCE GRAPHIC
@@ -368,8 +338,12 @@ function renderFences() {
 	var triggers = 0;
 
 	var lSym = new esri.symbol.SimpleLineSymbol("solid", new dojo.Color([0,0,0,0]), 1);
-	var rgb = getColorRGB(config.colors[1]);
 	
+	if (selectCount > 0) {
+		rgb = getColorRGB(config.colorsRed[1]);
+	} else {
+		rgb = getColorRGB(config.colorsBlue[1]);
+	}
 	// OUTER
 	for (var i=0; i<fences.length; i++) {
 		fence = fences[i];
