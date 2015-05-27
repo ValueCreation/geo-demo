@@ -340,6 +340,9 @@ function renderFences() {
 	var lSym = new esri.symbol.SimpleLineSymbol("solid", new dojo.Color([0,0,0,0]), 1);
 	
 	if (selectCount > 0) {
+		if ($("#lyrFences:checked").val()) {
+			lyrFences.setVisibility(true);
+		}
 		rgb = getColorRGB(config.colorsRed[1]);
 	} else {
 		rgb = getColorRGB(config.colorsBlue[1]);
