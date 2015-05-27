@@ -64,9 +64,12 @@ function init(){
 				chomonicxLayer.layerObject.setVisibility(false);
 			} else if (layers[i].title == config.lyrStores) {
 				geodemoLayer = layers[i];
-				geodemoLayer.layerObject.setVisibility(true);
+				geodemoLayer.layerObject.setVisibility(true);			
 			}
 		}
+		
+		// 全件表示用のレイヤ作成
+		makeGeodemoLayer();
 
 		if (map.loaded) {
 			initMap(layers);
@@ -95,19 +98,18 @@ function init(){
 
 }
 
-function makeGeodemoLayer(noDef) {
+function makeGeodemoLayer() {
 	
-	if (!noDef) {
-		noDef = "City_code <> '381'";
-	//} else {
-		//noDef = geodemoLayer.layerDefinition.definitionExpression;
-	}
+	//if (!noDef) {
+	var def = "City_code <> '381'";
+	//}
+	
 	var geodemoUrl = geodemoLayer.url;
 	
 	if (geodemoUpdateLayer) {
 		map.removeLayer(geodemoUpdateLayer);
 	}
-
+	
 	geodemoUpdateLayer = new esri.layers.FeatureLayer(geodemoUrl,{
 				id:"geodemoUpdateLayer",
 				mode: esri.layers.FeatureLayer.MODE_SNAPSHOT,	
@@ -131,12 +133,12 @@ function makeGeodemoLayer(noDef) {
 	geodemoUpdateLayer.setRenderer(renderer);
 	map.addLayer(geodemoUpdateLayer);
 	map.reorderLayer(geodemoUpdateLayer, 1);
-
-	if ($("#geodemoUpdateLayer:checked").val()) {
-		geodemoUpdateLayer.setVisibility(true);
-	} else {
-		geodemoUpdateLayer.setVisibility(false);
-	}
+	
+	//if ($("#geodemoUpdateLayer:checked").val()) {
+	//	geodemoUpdateLayer.setVisibility(true);
+	//} else {
+	geodemoUpdateLayer.setVisibility(false);
+	//}
 }
 
 // FENCE CLICK HANDLER
@@ -201,6 +203,7 @@ function changeLayerColor() {
 	var renderer = new esri.renderer.SimpleRenderer(symbol);
 	geodemoLayer.layerObject.setRenderer(renderer);
 	geodemoLayer.layerObject.redraw();
+
 }
 
 // LOAD COUNTERS
@@ -224,11 +227,13 @@ function loadCounters() {
 //FILTER STORES BY URBANICITY, LIFEMODE & NAT/ORG
 function updateStoresDefQuery() {
 	var def = [];
+	/*
 	if (noDef) {
 		makeGeodemoLayer(noDef);
 	} else {
 		makeGeodemoLayer(noDef);
 	}
+	*/
 	/*
 	var uDef = getUrbanacityDefQuery();
 	if (uDef)
@@ -242,10 +247,11 @@ function updateStoresDefQuery() {
 	if (noDef)
 		def.push(noDef);
 	
-	lyrFences.clear();
 	lyrStores.setDefinitionExpression(def.join(" AND "));
-	selectCount++;
+	
+	lyrFences.clear();	
 	changeLayerColor();
+	selectCount++;
 }
 
 function getUrbanacityDefQuery() {
@@ -282,11 +288,12 @@ function getNatOrgDefQuery() {
 }
 
 // CREATE CIRCLES
-function createCircles(extent) {
+function createCircles() {
 	//map.graphics.clear();
 	fences = [];
 
 	var graphics = lyrStores.graphics;
+	//var graphics= geodemoUpdateLayer.graphics;
 	storeCount = graphics.length;
 	for (var i=0; i<graphics.length; i++) {
 		var gra = graphics[i];
@@ -304,7 +311,6 @@ function createCircles(extent) {
   			},
 			"triggerId": id
 		};
-		
 		fences.push(createFenceGraphic(obj));
   		if (fences.length == storeCount) {
 			renderFences();
@@ -342,6 +348,9 @@ function renderFences() {
 	if (selectCount > 0) {
 		if ($("#lyrFences:checked").val()) {
 			lyrFences.setVisibility(true);
+		}
+		if ($("#geodemoUpdateLayer:checked").val()) {
+			geodemoUpdateLayer.setVisibility(true);
 		}
 		rgb = getColorRGB(config.colorsRed[1]);
 	} else {
